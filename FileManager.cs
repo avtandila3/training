@@ -1,7 +1,9 @@
+
 using PhoneBook.Models;
 using System;
 using System.Collections.Generic;
 using System.IO;
+using System.Runtime.Serialization.Formatters.Binary;
 
 namespace PhoneBook.DAL
 {
@@ -23,9 +25,6 @@ namespace PhoneBook.DAL
                 contacts.Add(contact);
             }
             return contacts;
-            //waikitxos mititebuli failidan da daabrunos mititebuli obiektebis siad.
-            //throw new NotImplementedException();
-
         }
 
         public void Save(string filePath, IEnumerable<Contact> contacts)
@@ -40,10 +39,6 @@ namespace PhoneBook.DAL
                 writer.Write(item.Phone);
                 writer.Write(item.Email);
             }
-
-            //chaweros migebuli kontaktebis sia mititebul failshi binalurad.
-            //ar dagaviwkdet chawerisas id-ze unikalurebis 
-            //throw new NotImplementedException();
         }
 
         private void CheckId(IEnumerable<Contact> contacts)
@@ -52,11 +47,10 @@ namespace PhoneBook.DAL
 
             foreach (Contact contact in contacts)
             {
-                if (idCheck.Contains(contact.ID))
+                if (!idCheck.Add(contact.ID))
                 {
                     throw new Exception("contacts ID is not unique.");
                 }
-                idCheck.Add(contact.ID);
             }
         }
     }
